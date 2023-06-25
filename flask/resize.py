@@ -6,7 +6,7 @@ import shutil
 from PIL import Image
 import datetime
 
-UPLOAD_FOLDER = '/home/project/images-masha/flask/static/photo'
+UPLOAD_FOLDER = 'static/photo'
 ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
 
 app = Flask(__name__)
