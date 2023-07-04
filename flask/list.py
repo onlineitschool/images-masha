@@ -4,7 +4,8 @@ from flask import Flask, send_from_directory, render_template
 from werkzeug.utils import secure_filename
 import shutil
 from PIL import Image
-import datetime
+from datetime import date
+import json
 
 UPLOAD_FOLDER = 'static/photo'
 ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
@@ -44,6 +45,20 @@ def upload_file():
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            dict = {"name" : filename, "date" : str(date.today())}
+            
+
+            with open("photos.json") as f:
+                lines = list(f)  
+                photos_list = ''.join(lines) 
+                photos_list_dict = json.loads(photos_list)
+                photos_list_dict["images"].append(dict)
+                photos_list_dict["images_total"]+=1
+                print(photos_list_dict)
+
+            with open("photos.json", "w") as f:
+                print(json.dumps(photos_list_dict), file=f)
+
             return redirect('/resized/400/' + filename)
     return '''
     <!doctype html>
